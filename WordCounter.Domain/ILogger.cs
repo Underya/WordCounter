@@ -1,6 +1,8 @@
-﻿namespace WordCounter.Domain;
+﻿using WordCounter.Domain.SourceValidation;
+
+namespace WordCounter.Domain;
 
 public interface ILogger
 {
-     Task Log(IEnumerable<ValidationError> validationErrors, CancellationToken cancellationToken);
+     Task Log(ValidSource source, IEnumerable<ValidationError> validationErrors, CancellationToken cancellationToken);
 }

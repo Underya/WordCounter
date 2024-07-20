@@ -46,17 +46,17 @@ public class WordCounterProcessor
                     MaxDegreeOfParallelism = CountThreads,
                     CancellationToken = cancellationToken
                 },
-                async (groupedWord, token) => await ProcessGroupedWord(groupedWord, token));
+                async (groupedWord, token) => await ProcessGroupedWord(validSource, groupedWord, token));
              
         }
     }
 
-    private async Task ProcessGroupedWord(GroupedWord groupedWord, CancellationToken cancellationToken)
+    private async Task ProcessGroupedWord(ValidSource validSource, GroupedWord groupedWord, CancellationToken cancellationToken)
     {
         var validationErrors = await _wordValidator.ValidWord(groupedWord.Word, cancellationToken);
         if (validationErrors.Any())
         {
-            await _logger.Log(validationErrors, cancellationToken);
+            await _logger.Log(validSource, validationErrors, cancellationToken);
             return;
         }
 
