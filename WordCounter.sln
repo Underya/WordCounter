@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCounter.Domain", "WordC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCounter.Domain.Tests", "WordCounter.Domain.Tests\WordCounter.Domain.Tests.csproj", "{A7E8EB72-1050-4E34-B99D-7C19332A8EF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCounter.Implementation", "WordCounter.Implementation\WordCounter.Implementation.csproj", "{F541CDBC-9A99-4995-B0A1-6E66C7BD7A20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCounter.Implementation.Tests", "WordCounter.Implementation.Tests\WordCounter.Implementation.Tests.csproj", "{E9A8D25E-2ECE-4207-ADE2-46A209C3C09C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{A7E8EB72-1050-4E34-B99D-7C19332A8EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7E8EB72-1050-4E34-B99D-7C19332A8EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7E8EB72-1050-4E34-B99D-7C19332A8EF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F541CDBC-9A99-4995-B0A1-6E66C7BD7A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F541CDBC-9A99-4995-B0A1-6E66C7BD7A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F541CDBC-9A99-4995-B0A1-6E66C7BD7A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F541CDBC-9A99-4995-B0A1-6E66C7BD7A20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9A8D25E-2ECE-4207-ADE2-46A209C3C09C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9A8D25E-2ECE-4207-ADE2-46A209C3C09C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9A8D25E-2ECE-4207-ADE2-46A209C3C09C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9A8D25E-2ECE-4207-ADE2-46A209C3C09C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
