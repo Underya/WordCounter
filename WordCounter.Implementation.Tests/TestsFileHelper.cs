@@ -17,6 +17,15 @@ public static class TestsFileHelper
         using var _ = File.Create(Path.Combine(TestDirectory, fileName));
         return filePath;
     }
+    
+    public static async Task<string> CreateFileAndGetPath(string fileName, string content)
+    {
+        var filePath = GetFilePath(fileName);
+        await using var fileStream = File.Create(Path.Combine(TestDirectory, fileName));
+        await using var streamWriter = new StreamWriter(fileStream);
+        await streamWriter.WriteAsync(content);
+        return filePath;
+    }
 
     public static void DeleteIfExists(string fileName)
     {
