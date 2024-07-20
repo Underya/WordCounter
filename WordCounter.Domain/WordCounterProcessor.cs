@@ -5,6 +5,8 @@ namespace WordCounter.Domain;
 
 public class WordCounterProcessor
 {
+    private int CountThreads = 5;
+    
     private readonly IWordSourceFabric _wordSourceFabric;
     private readonly IWordCountSaver _wordCountSaver;
     private readonly IWordValidator _wordValidator;
@@ -37,8 +39,14 @@ public class WordCounterProcessor
                 .GroupBy(word => word)
                 .Select(groupedWord => new GroupedWord(groupedWord.Key, groupedWord.Count()));
 
-            foreach (var groupedWord in groupedWordBatch)
-                await ProcessGroupedWord(groupedWord);
+            await Parallel.ForEachAsync(
+                groupedWordBatch,
+                new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = CountThreads
+                },
+                async (groupedWord, token) => await ProcessGroupedWord(groupedWord));
+             
         }
     }
 
