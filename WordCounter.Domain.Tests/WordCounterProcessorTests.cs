@@ -88,6 +88,10 @@ public class WordCounterProcessorTests
     private WordCounterProcessor CreateProcessor()
     {
         return new WordCounterProcessor(
+            new WordCounterProcessorOption
+            {
+                ThreadCount = 5
+            },
             _wordSourceFabricMock.Object,
             _wordCountSaverMock.Object,
             _wordValidator.Object,

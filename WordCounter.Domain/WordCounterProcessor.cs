@@ -5,19 +5,20 @@ namespace WordCounter.Domain;
 
 public class WordCounterProcessor
 {
-    private int CountThreads = 5;
-    
+    private readonly int _countThreads;
     private readonly IWordSourceFabric _wordSourceFabric;
     private readonly IWordCountSaver _wordCountSaver;
     private readonly IWordValidator _wordValidator;
     private readonly ILogger _logger;
 
     public WordCounterProcessor(
+        WordCounterProcessorOption wordCounterProcessorOption,
         IWordSourceFabric wordSourceFabric,
         IWordCountSaver wordCountSaver,
         IWordValidator wordValidator,
         ILogger logger)
     {
+        _countThreads = wordCounterProcessorOption.ThreadCount;
         _wordSourceFabric = wordSourceFabric;
         _wordCountSaver = wordCountSaver;
         _wordValidator = wordValidator;
@@ -43,7 +44,7 @@ public class WordCounterProcessor
                 groupedWordBatch,
                 new ParallelOptions
                 {
-                    MaxDegreeOfParallelism = CountThreads,
+                    MaxDegreeOfParallelism = _countThreads,
                     CancellationToken = cancellationToken
                 },
                 async (groupedWord, token) => await ProcessGroupedWord(validSource, groupedWord, token));
