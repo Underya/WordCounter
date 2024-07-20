@@ -9,7 +9,7 @@ public class WordCounterProcessorTests
     private const string FileName = "FileName";
     private const string Word1 = "Word1";
     private const string Word2 = "Word2";
-    
+
     private Mock<IWordSource> _wordSourceMock;
     private Mock<IWordSourceFabric> _wordSourceFabricMock;
     private Mock<IWordCountSaver> _wordCountSaverMock;
@@ -28,7 +28,7 @@ public class WordCounterProcessorTests
         _wordValidator = new Mock<IWordValidator>();
         _loggerMock = new Mock<ILogger>();
     }
-    
+
     [Test]
     public async Task Process_SaveOneName_MoqIsValid()
     {
@@ -36,9 +36,9 @@ public class WordCounterProcessorTests
         var validSource = new ValidSource(FileName);
         var processor = CreateProcessor();
 
-        await processor.Process(validSource);
-     
-        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word1, 1));
+        await processor.Process(validSource, CancellationToken.None);
+
+        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word1, 1, It.IsAny<CancellationToken>()));
     }
 
     [Test]
@@ -48,10 +48,10 @@ public class WordCounterProcessorTests
         var validSource = new ValidSource(FileName);
         var processor = CreateProcessor();
 
-        await processor.Process(validSource);
-     
-        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word1, 2));
-        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word2, 1));
+        await processor.Process(validSource, CancellationToken.None);
+
+        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word1, 2, It.IsAny<CancellationToken>()));
+        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word2, 1, It.IsAny<CancellationToken>()));
     }
 
     [Test]
@@ -60,27 +60,28 @@ public class WordCounterProcessorTests
         SetupWordSourceGetNextBatch(new[] { Word1, Word2, Word1 });
         var validSource = new ValidSource(FileName);
         var validationError = new ValidationError(FileName, "Word is not valid");
-        var validationErrors = new[] { validationError }; 
-        _wordValidator.Setup(mock => mock.ValidWord(Word1))
+        var validationErrors = new[] { validationError };
+        _wordValidator.Setup(mock => mock.ValidWord(Word1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(validationErrors);
         var processor = CreateProcessor();
 
-        await processor.Process(validSource);
-     
-        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word2, 1));
-        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word1, It.IsAny<int>()), Times.Never);
-        _loggerMock.Verify(mock => mock.Log(validationErrors));
+        await processor.Process(validSource, CancellationToken.None);
+
+        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word2, 1, It.IsAny<CancellationToken>()));
+        _wordCountSaverMock.Verify(m =>
+            m.IncreaseWordCount(Word1, It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
+        _loggerMock.Verify(mock => mock.Log(validationErrors, It.IsAny<CancellationToken>()));
     }
-    
+
     private void SetupWordSourceGetNextBatch(IEnumerable<string> words)
     {
         var sequence = new MockSequence();
         _wordSourceMock
             .InSequence(sequence)
-            .Setup(m => m.GetNextBatch())
+            .Setup(m => m.GetNextBatch(It.IsAny<CancellationToken>()))
             .ReturnsAsync(words);
         _wordSourceMock.InSequence(sequence)
-            .Setup(m => m.GetNextBatch())
+            .Setup(m => m.GetNextBatch(It.IsAny<CancellationToken>()))
             .ReturnsAsync([]);
     }
 

@@ -2,5 +2,5 @@
 
 public interface IWordValidator
 {
-    Task<IEnumerable<ValidationError>> ValidWord(string word);
+    Task<IEnumerable<ValidationError>> ValidWord(string word, CancellationToken cancellationToken);
 }

@@ -2,5 +2,5 @@
 
 public interface IWordSource : IDisposable
 {
-    Task<IEnumerable<string>> GetNextBatch();
+    Task<IEnumerable<string>> GetNextBatch(CancellationToken cancellationToken);
 }

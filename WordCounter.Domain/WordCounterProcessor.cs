@@ -24,13 +24,13 @@ public class WordCounterProcessor
         _logger = logger;
     }
     
-    public async Task Process(ValidSource validSource)
+    public async Task Process(ValidSource validSource, CancellationToken cancellationToken)
     {
         using var wordSource = _wordSourceFabric.Create(validSource);
 
         while (true)
         {
-            var wordBatch = await wordSource.GetNextBatch();
+            var wordBatch = await wordSource.GetNextBatch(cancellationToken);
 
             if (!wordBatch.Any())
                 break;
@@ -43,23 +43,24 @@ public class WordCounterProcessor
                 groupedWordBatch,
                 new ParallelOptions
                 {
-                    MaxDegreeOfParallelism = CountThreads
+                    MaxDegreeOfParallelism = CountThreads,
+                    CancellationToken = cancellationToken
                 },
-                async (groupedWord, token) => await ProcessGroupedWord(groupedWord));
+                async (groupedWord, token) => await ProcessGroupedWord(groupedWord, token));
              
         }
     }
 
-    private async Task ProcessGroupedWord(GroupedWord groupedWord)
+    private async Task ProcessGroupedWord(GroupedWord groupedWord, CancellationToken cancellationToken)
     {
-        var validationErrors = await _wordValidator.ValidWord(groupedWord.Word);
+        var validationErrors = await _wordValidator.ValidWord(groupedWord.Word, cancellationToken);
         if (validationErrors.Any())
         {
-            await _logger.Log(validationErrors);
+            await _logger.Log(validationErrors, cancellationToken);
             return;
         }
 
-        await _wordCountSaver.IncreaseWordCount(groupedWord.Word, groupedWord.Count);
+        await _wordCountSaver.IncreaseWordCount(groupedWord.Word, groupedWord.Count, cancellationToken);
     }
 
     private record GroupedWord(string Word, int Count);

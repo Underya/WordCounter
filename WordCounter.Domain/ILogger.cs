@@ -2,5 +2,5 @@
 
 public interface ILogger
 {
-     Task Log(IEnumerable<ValidationError> validationErrors);
+     Task Log(IEnumerable<ValidationError> validationErrors, CancellationToken cancellationToken);
 }
