@@ -1,4 +1,6 @@
-﻿namespace WordCounter.Implementation.Tests;
+﻿using System.Text;
+
+namespace WordCounter.Implementation.Tests;
 
 public static class TestsFileHelper
 {
@@ -14,15 +16,15 @@ public static class TestsFileHelper
     public static string CreateFileAndGetPath(string fileName)
     {
         var filePath = GetFilePath(fileName);
-        using var _ = File.Create(Path.Combine(TestDirectory, fileName));
+        using var _ = File.Create(filePath);
         return filePath;
     }
     
     public static async Task<string> CreateFileAndGetPath(string fileName, string content)
     {
         var filePath = GetFilePath(fileName);
-        await using var fileStream = File.Create(Path.Combine(TestDirectory, fileName));
-        await using var streamWriter = new StreamWriter(fileStream);
+        await using var fileStream =  File.Create(filePath);
+        await using var streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
         await streamWriter.WriteAsync(content);
         return filePath;
     }
