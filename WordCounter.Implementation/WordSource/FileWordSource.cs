@@ -57,6 +57,7 @@ public class FileWordSource : IWordSource
 
         
         AddIfNotNull(wordCollection, _lastWord);
+        _lastWord = "";
         return wordCollection;
     }
 

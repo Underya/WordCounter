@@ -100,6 +100,23 @@ public class FileWordSourceTests
             .And.Contain(WordRuLocal2);
     }
     
+    [Test]
+    public async Task GetNextBatch_Return2_ThenNothing()
+    {
+        var filePath = await CreateFileAndGetPath(
+            $"{Word1} {Word2}");
+        var fabric = CreateFabric();
+        await using var wordSource = fabric.Create(new ValidSource(filePath));
+
+        var wordBatch1 = await wordSource.GetNextBatch(CancellationToken.None);
+        var wordBatch2 = await wordSource.GetNextBatch(CancellationToken.None);
+        
+        wordBatch1.Should().HaveCount(2)
+            .And.Contain(Word1)
+            .And.Contain(Word2);
+        wordBatch2.Should().BeEmpty();
+    }
+    
     private async Task<string> CreateFileAndGetPath(params string[] wordLines)
     {
         var builrder = new StringBuilder();
