@@ -28,7 +28,7 @@ public static class DependencyInjectionExtension
         collection.AddTransient<WordCounterProcessor>();
         collection.AddScoped(_ => new WordCounterProcessorOption
         {
-            ThreadCount = 1
+            ThreadCount = 5
         });
 
         collection.AddScoped<ILogger, ConsoleLogger>();
