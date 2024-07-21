@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using WordCounter.Domain;
 using WordCounter.Domain.SourceValidation;
+using WordCounter.Implementation.DataBaseMigration;
+using WordCounter.Implementation.WordCountSaver;
 
 namespace WordCounter;
 
@@ -9,7 +11,8 @@ internal class Program
     static async Task Main(string[] args)
     {
         var serviceProvider = AddDependencyInjection();
-
+        serviceProvider.DoMigration();
+        
         var fileName = args.FirstOrDefault();
         if (string.IsNullOrWhiteSpace(fileName))
         {
@@ -27,6 +30,7 @@ internal class Program
         var serviceProvider = dICollection.BuildServiceProvider();
         return serviceProvider;
     }
+
     
     private static async Task ProcessFile(IServiceProvider serviceProvider, string fileName)
     {
