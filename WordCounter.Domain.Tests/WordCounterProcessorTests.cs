@@ -61,7 +61,7 @@ public class WordCounterProcessorTests
         var validSource = new ValidSource(FileName);
         var validationError = new ValidationError(FileName, "Word is not valid");
         var validationErrors = new[] { validationError };
-        _wordValidator.Setup(mock => mock.ValidWord(Word1, It.IsAny<CancellationToken>()))
+        _wordValidator.Setup(mock => mock.ValidateWord(validSource, Word1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(validationErrors);
         var processor = CreateProcessor();
 

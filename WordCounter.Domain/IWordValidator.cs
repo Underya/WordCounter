@@ -1,6 +1,11 @@
-﻿namespace WordCounter.Domain;
+﻿using WordCounter.Domain.SourceValidation;
+
+namespace WordCounter.Domain;
 
 public interface IWordValidator
 {
-    Task<IEnumerable<ValidationError>> ValidWord(string word, CancellationToken cancellationToken);
+    Task<IEnumerable<ValidationError>> ValidateWord(
+        ValidSource source,
+        string word,
+        CancellationToken cancellationToken);
 }

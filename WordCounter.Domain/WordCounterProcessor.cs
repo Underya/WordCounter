@@ -54,7 +54,7 @@ public class WordCounterProcessor
 
     private async Task ProcessGroupedWord(ValidSource validSource, GroupedWord groupedWord, CancellationToken cancellationToken)
     {
-        var validationErrors = await _wordValidator.ValidWord(groupedWord.Word, cancellationToken);
+        var validationErrors = await _wordValidator.ValidateWord(validSource, groupedWord.Word, cancellationToken);
         if (validationErrors.Any())
         {
             await _logger.Log(validationErrors, cancellationToken);
