@@ -42,7 +42,7 @@ public class WordCountRepository : IWordCountRepository
         await using var connection = _connectionFactory.CreateConnection();
         await connection.OpenAsync(cancellationToken);
 
-        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
         
         var command = new SqlCommand(query, connection);
         command.Transaction = transaction as SqlTransaction;
@@ -56,7 +56,7 @@ public class WordCountRepository : IWordCountRepository
         await using var connection = _connectionFactory.CreateConnection();
         await connection.OpenAsync(cancellationToken);
 
-        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.Serializable);
+        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
         
         var command = new SqlCommand(query, connection);
         command.Transaction = transaction as SqlTransaction;

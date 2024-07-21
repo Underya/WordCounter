@@ -28,7 +28,7 @@ public class WordCounterProcessor
     
     public async Task Process(ValidSource validSource, CancellationToken cancellationToken)
     {
-        using var wordSource = _wordSourceFabric.Create(validSource);
+        await using var wordSource = _wordSourceFabric.Create(validSource);
 
         while (true)
         {

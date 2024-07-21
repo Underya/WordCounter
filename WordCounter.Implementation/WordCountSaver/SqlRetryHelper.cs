@@ -22,6 +22,8 @@ public static class SqlRetryHelper
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+                    
                 await action();
                 break;
             }
@@ -34,6 +36,8 @@ public static class SqlRetryHelper
                 if (MaxRetryCount <= currentTry)
                     throw;
 
+                cancellationToken.ThrowIfCancellationRequested();
+                
                 await Task.Delay(currentDelay, cancellationToken);
 
                 var jitter = jitterGenerator.Next(MinJitterMilliSecond, MaxJitterMilliSecond);

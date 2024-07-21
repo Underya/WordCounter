@@ -15,8 +15,8 @@ public class MSSQLWordCountSaver : IWordCountSaver
     public async Task IncreaseWordCount(string word, int count, CancellationToken cancellationToken)
     {
         // Есть ненулевая вероятность,
-        // что несколько разных копий приложения будут пытаться работать с одной и той же строкой одновременно
-        // В этом случае я начать транзакцию заного, т.к. данные могли быть изменены
+        // что несколько разных копий приложения будут пытаться работать с одним и тем же словом одновременно
+        // В этом случае лучше начинать транзакцию заного, т.к. данные могли быть изменены
         // (например, создана запись, которую мы пытались вставить) 
         
         await SqlRetryHelper.Retry(
@@ -28,13 +28,13 @@ public class MSSQLWordCountSaver : IWordCountSaver
     {
         var existValue = await _wordCountRepository.WordExists(word, cancellationToken);
 
-        if (!existValue)
+        if (existValue)
         {
-            await _wordCountRepository.CreateNewWord(word, count, cancellationToken);
+            await _wordCountRepository.IncreaseWordCount(word, count, cancellationToken);
         }
         else
         {
-            await _wordCountRepository.IncreaseWordCount(word, count, cancellationToken);
+            await _wordCountRepository.CreateNewWord(word, count, cancellationToken);
         }
     }
 }
