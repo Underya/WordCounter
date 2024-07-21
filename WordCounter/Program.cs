@@ -12,6 +12,7 @@ internal class Program
         try
         {
             var serviceProvider = AddDependencyInjection();
+            
             serviceProvider.DoMigration();
 
             var fileName = args.FirstOrDefault();

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WordCounter.Domain;
 using WordCounter.Domain.SourceValidation;
@@ -14,31 +15,40 @@ namespace WordCounter;
 public static class DependencyInjectionExtension
 {
     public static void AddWordCounterDependency(this IServiceCollection collection)
-    {
+    {            
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+        collection.AddScoped<IConfigurationRoot>(_ => config);
+        
         collection.AddScoped<ISourceValidator, FileSourceValidator>();
         collection.AddScoped<IWordSourceFabric, FileWordSourceFabric>();
-        collection.AddScoped(_ => new FileWordSourceOption
-        {
-            WordsInBatch = 1000,
-            CountSymbolRead = 200
-        });
-
+        collection.AddScoped(serviceProvider =>
+            serviceProvider
+                .GetService<IConfigurationRoot>()!
+                .GetSection("WordSourceOption")
+                .Get<FileWordSourceOption>()
+        );
         collection.AddScoped<IWordValidator, WordValidator>();
         
         collection.AddTransient<WordCounterProcessor>();
-        collection.AddScoped(_ => new WordCounterProcessorOption
-        {
-            ThreadCount = 5
-        });
+        collection.AddScoped(serviceProvider =>
+            serviceProvider
+                .GetService<IConfigurationRoot>()!
+                .GetSection("WordCounterOption")
+                .Get<WordCounterProcessorOption>()
+        );
 
         collection.AddScoped<ILogger, ConsoleLogger>();
 
         collection.AddScoped<IWordCountSaver, MSSQLWordCountSaver>();
         collection.AddScoped<IWordCountRepository, WordCountRepository>();
         collection.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
-        collection.AddScoped(_ => new DbConnectionOption
-        {
-            ConnectionString = @"Server=localhost,1433;Database=master;User Id=sa;Password=TestsPassword@123;TrustServerCertificate=True"
-        });
+        collection.AddScoped(serviceProvider =>
+            serviceProvider
+                .GetService<IConfigurationRoot>()!
+                .GetSection("DataBaseConnectionOption")
+                .Get<DbConnectionOption>()
+        );
     }
 }
