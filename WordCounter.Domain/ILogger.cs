@@ -4,5 +4,5 @@ namespace WordCounter.Domain;
 
 public interface ILogger
 {
-     Task Log(ValidSource source, IEnumerable<ValidationError> validationErrors, CancellationToken cancellationToken);
+     Task Log(IEnumerable<ValidationError> validationErrors, CancellationToken cancellationToken);
 }

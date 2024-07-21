@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCounter.Implementation"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCounter.Implementation.Tests", "WordCounter.Implementation.Tests\WordCounter.Implementation.Tests.csproj", "{E9A8D25E-2ECE-4207-ADE2-46A209C3C09C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCounter", "WordCounter\WordCounter.csproj", "{B30FAF04-32E3-45EF-994A-39BB371AB23B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{E9A8D25E-2ECE-4207-ADE2-46A209C3C09C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9A8D25E-2ECE-4207-ADE2-46A209C3C09C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9A8D25E-2ECE-4207-ADE2-46A209C3C09C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B30FAF04-32E3-45EF-994A-39BB371AB23B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B30FAF04-32E3-45EF-994A-39BB371AB23B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B30FAF04-32E3-45EF-994A-39BB371AB23B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B30FAF04-32E3-45EF-994A-39BB371AB23B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

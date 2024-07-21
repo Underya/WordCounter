@@ -57,7 +57,7 @@ public class WordCounterProcessor
         var validationErrors = await _wordValidator.ValidWord(groupedWord.Word, cancellationToken);
         if (validationErrors.Any())
         {
-            await _logger.Log(validSource, validationErrors, cancellationToken);
+            await _logger.Log(validationErrors, cancellationToken);
             return;
         }
 

@@ -70,7 +70,7 @@ public class WordCounterProcessorTests
         _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word2, 1, It.IsAny<CancellationToken>()));
         _wordCountSaverMock.Verify(m =>
             m.IncreaseWordCount(Word1, It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
-        _loggerMock.Verify(mock => mock.Log(validSource, validationErrors, It.IsAny<CancellationToken>()));
+        _loggerMock.Verify(mock => mock.Log(validationErrors, It.IsAny<CancellationToken>()));
     }
 
     private void SetupWordSourceGetNextBatch(IEnumerable<string> words)
