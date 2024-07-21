@@ -7,9 +7,10 @@ namespace WordCounter.Domain.Tests;
 
 public class WordCounterProcessorTests
 {
-    private const string FileName = "FileName";
-    private const string Word1 = "Word1";
-    private const string Word2 = "Word2";
+    private const string FileName = "filename";
+    private const string Word1 = "word";
+    private const string Word2 = "words";
+    private const string Word1InDifferentCase = "WoRd";
 
     private Mock<IWordSource> _wordSourceMock;
     private Mock<IWordSourceFabric> _wordSourceFabricMock;
@@ -31,7 +32,7 @@ public class WordCounterProcessorTests
     }
 
     [Test]
-    public async Task Process_SaveOneName_MoqIsValid()
+    public async Task Process_SaveOneWord_MoqIsValid()
     {
         SetupWordSourceGetNextBatch(new[] { Word1 });
         var validSource = new ValidSource(FileName);
@@ -43,7 +44,19 @@ public class WordCounterProcessorTests
     }
 
     [Test]
-    public async Task Process_SaveDifferentName_MoqIsValid()
+    public async Task Process_WordInDifferentRegister_SaveInLowerRegister()
+    {
+        SetupWordSourceGetNextBatch(new[] { Word1, Word1InDifferentCase });
+        var validSource = new ValidSource(FileName);
+        var processor = CreateProcessor();
+
+        await processor.Process(validSource, CancellationToken.None);
+
+        _wordCountSaverMock.Verify(m => m.IncreaseWordCount(Word1, 2, It.IsAny<CancellationToken>()));
+    }
+    
+    [Test]
+    public async Task Process_SaveDifferentWord_MoqIsValid()
     {
         SetupWordSourceGetNextBatch(new[] { Word1, Word2, Word1 });
         var validSource = new ValidSource(FileName);

@@ -38,7 +38,7 @@ public class WordCounterProcessor
                 break;
 
             var groupedWordBatch = wordBatch
-                .GroupBy(word => word)
+                .GroupBy(word => word.ToLower())
                 .Select(groupedWord => new GroupedWord(groupedWord.Key, groupedWord.Count()));
 
             await Parallel.ForEachAsync(
