@@ -1,4 +1,4 @@
-﻿namespace WordCounter.Domain;
+﻿namespace WordCounter.Domain.WordCountSaver;
 
 public interface IWordCountSaver
 {
