@@ -31,7 +31,6 @@ public static class DependencyInjectionExtension
             ThreadCount = 1
         });
 
-        collection.AddScoped<IWordCountSaver, DbSaveStub>();
         collection.AddScoped<ILogger, ConsoleLogger>();
 
         collection.AddScoped<IWordCountSaver, MSSQLWordCountSaver>();
@@ -41,14 +40,5 @@ public static class DependencyInjectionExtension
         {
             ConnectionString = @"Server=localhost,1433;Database=master;User Id=sa;Password=TestsPassword@123;TrustServerCertificate=True"
         });
-    }
-}
-
-public class DbSaveStub : IWordCountSaver
-{
-    public Task IncreaseWordCount(string word, int count, CancellationToken cancellationToken)
-    {
-        Console.WriteLine($"Word:{word}. Count:{count}");
-        return Task.CompletedTask;
     }
 }
